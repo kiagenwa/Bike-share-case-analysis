@@ -362,7 +362,7 @@ Next up, the average trip time.
 ```{r plot mean for each user type, message=FALSE, warning=FALSE}
 ggplot(data=trip_c3) + stat_summary(aes(x = day_of_week, y = trip_length), fun = "mean", geom = "bar") +
   facet_wrap('member_casual') + 
-  labs(title = 'average trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'average trip duration' ) + theme(axis.text.x = element_text(angle = 45))
+  labs(title = 'Average trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'average trip duration (seconds)' ) + theme(axis.text.x = element_text(angle = 45))
 ```
 
 That's another one done! Let's make the viz for the last one.
@@ -370,7 +370,7 @@ That's another one done! Let's make the viz for the last one.
 ```{r plot max trip length for each user type}
 ggplot(data=trip_c3) + stat_summary(aes(x = day_of_week, y = trip_length/3600), fun = "max", geom = "bar") +
   facet_wrap('member_casual') + 
-  labs(title = 'average trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'average trip duration' ) + theme(axis.text.x = element_text(angle = 45))
+  labs(title = 'Maximum trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'Maximum trip duration (hours)' ) + theme(axis.text.x = element_text(angle = 45))
 ```
 
 Now that's all the viz created for all 3 findings. In actual work I'd move over to PowerPoint to make presentation with these visualizations (and some stats descriptions).
