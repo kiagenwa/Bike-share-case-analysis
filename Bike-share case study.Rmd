@@ -19,6 +19,7 @@ Anyway, Let's jump into the project!
 #### Organization 
 
 This report is organized by Data analysis steps as laid out by Google: 
+
  * Ask
  * Prepare
  * Process
