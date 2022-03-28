@@ -1,0 +1,384 @@
+---
+title: 'Case Study: How Does a Bike-Share Navigate Speedy Success?'
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+author: "Jamrus Ruttanayukol"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+This page is a record of my Google Analytic program's capstone project. There were 2 case studies: bike-sharing company, and wellness company. I picked the former one.
+
+Originally I wanted to do an open case study, but after looking around, I found out that there's not enough data for my interest - where should I buy a house in Thailand. Our census data is too outdated (only up to 2010, 2014, and 2017...). With so many big things going on recently, I lost interest. Maybe after I learn more I'll get back to it.
+
+Anyway, Let's jump into the project! 
+
+#### Organization 
+
+This report is organized by Data analysis steps as laid out by Google: 
+ * Ask
+ * Prepare
+ * Process
+ * Analyze
+ * Share
+ * Act
+
+## Scenario
+
+I'm a junior data analyst in marketing team at a Chicago bike-sharing company Cyclistic. The company wants to increase its annual membership. There are many questions to answer and they assigned me to look into how annual members and casual riders use our service differently. 
+
+For more information, please click [here](https://d3c33hcgiwev3.cloudfront.net/aacF81H_TsWnBfNR_x7FIg_36299b28fa0c4a5aba836111daad12f1_DAC8-Case-Study-1.pdf?Expires=1648166400&Signature=H1lHhBbxoVuUHoufxSchQjKIrqBJNqXgVqBWC-VjtGhT4ojXScH~dQnMa9Twg1~5gGpKktzpZT07n1Dbue3g2BMZMhs6aS8N0eJayXZaDir0FHNaZssgqa3CF8ypt1LyKQJBRQt1tP-qQ77mSPFcwxProxG2XVbwFH0FbTE4Kgk_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A)
+
+## Ask
+
+Question: How do annual members and casual riders use Cyclistic bikes differently?
+
+#### What am I trying to solve?
+
+The end goal is getting more memberships. To this end, I need to spot behavioral differences that casual riders have from members. Especially ones that'd encourage them into subscriptions.
+
+#### How can my insights drive business decision?
+
+Once I spot any difficulties the casual riders face and how annual members do their cycling, I can recommend actions to my manager, Moreno. The team can also use my insights to improve their other topics of study.
+
+### Deliverable
+
+As a good practice, I should have a clear business task before diving in any data:
+
+* Identifying the possible hurdles barring casual riders to join membership.
+
+## Prepare
+
+For this case study, we'll use the past 12 months trip data from Motivate International Inc. available [here](https://divvy-tripdata.s3.amazonaws.com/index.html). And before anything, I should note to myself that we must be aware of data-privacy issues and, at any circumstances, must not use customer's personally identifiable information (i.e. credit card numbers, home address, purchase history, etc.).
+
+#### Where is my data located?
+
+After downloaded the data for past 12 months (March 2021 to February 2022), I keep the original files in a dedicated folder for this project on my PC. During analysis, 
+
+#### How is the data organized?
+
+Data is organized by months.
+
+#### Any bias or credibility issues in this data? 
+
+Does the data ROCCC - Reliable, Original, Comprehensive, Current, and Cite?
+Yes. The data seems OK. Since this data only involve company input (and automated data), input errors should be small.
+
+
+#### How am I going to address licensing, privacy, security, and accessibility?
+
+I will credit the data source in my report, above and at the end. 
+For privacy, a quick look at the data seems to contain no personal information unless I actively look for it. 
+The data will be kept in my PC during work in the project folder. After the project is done, the data and the report will be uploaded to team's shared drive.
+
+#### How did I verify the data's integrity?
+
+I looked at the data and see how it's formatted. Since this is in-house data, integrity should be good. 
+Nonetheless, I'll confirm further as I move to next step.
+
+#### How would it help me answer my question?
+
+The data has a column for member type. I can transform the data and look at each type's pattern.
+
+#### Any problems with data?
+
+No so far.
+
+### Deliverables
+
+The data seems to contain all information needed for this analysis. We can check bicycle type, user type, where and when they started ride and ended the ride.
+
+```{r set up environment, include=FALSE}
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(hms)
+library(ggplot2)
+```
+
+Let's check a dataset, say, 2021 March.
+
+```{r import data and check column names}
+tripdata_2103 <- read_csv('202103-divvy-tripdata.csv')
+colnames(tripdata_2103)
+```
+Now let's take a quick look at the data.
+
+```{r check each member record count in March 2021}
+head(tripdata_2103)
+tripdata_2103 %>%
+  group_by(member_casual) %>%
+  tally()
+tripdata_2103 %>%
+  group_by(rideable_type) %>%
+  tally()
+```
+There seems to be no problem and data should be able to help us get the answers.
+
+```{r import all 12 months of data, warning=FALSE, include=FALSE}
+rm(tripdata_2103)
+trip_2103 <- read_csv('202103-divvy-tripdata.csv')
+trip_2104 <- read_csv('202104-divvy-tripdata.csv')
+trip_2105 <- read_csv('202105-divvy-tripdata.csv')
+trip_2106 <- read_csv('202106-divvy-tripdata.csv')
+trip_2107 <- read_csv('202107-divvy-tripdata.csv')
+trip_2108 <- read_csv('202108-divvy-tripdata.csv')
+trip_2109 <- read_csv('202109-divvy-tripdata.csv')
+trip_2110 <- read_csv('202110-divvy-tripdata.csv')
+trip_2111 <- read_csv('202111-divvy-tripdata.csv')
+trip_2112 <- read_csv('202112-divvy-tripdata.csv')
+trip_2201 <- read_csv('202201-divvy-tripdata.csv')
+trip_2202 <- read_csv('202202-divvy-tripdata.csv')
+```
+
+## Process
+
+Now, onto the process part.
+
+#### What tools am I choosing and why?
+
+For this task, I'm planning to use only R. I've learned enough of SQL from UCDavis SQL basics specialization. I know Python is also useful but as of now I only know SQL and R. So, I hope I'll gain understanding of R basics through this course!
+
+#### Have I ensured my data's integrity?
+
+This is in-house data. 
+Note: data integrity - the accuracy, completeness, consistency, and trustworthiness of data throughout its life cycle.
+For this case study purpose, this data has all the attributes for its integrity.
+
+```{r combine all 12 monthsdata}
+trip_2022 <- rbind(trip_2201, trip_2202)
+trip_2021 <- rbind(trip_2103, trip_2104, trip_2105, trip_2106, trip_2107, trip_2108, trip_2109, trip_2110, trip_2111, trip_2112)
+trips <- rbind(trip_2021, trip_2022)
+rm(trip_2021, trip_2022)
+rm(trip_2103, trip_2104, trip_2105, trip_2106, trip_2107, trip_2108, trip_2109, trip_2110, trip_2111, trip_2112, trip_2201, trip_2202)
+```
+
+
+#### What steps have I taken to ensure that my data is clean?
+
+Since this is an in-house data, I'll just do a simple checks for NULL and NA.
+
+```{r check if any NULL or NA are there}
+max(is.null(trips))
+max(is.na(trips))
+```
+Oh it seems there's some NA. Let's take a closer look.
+
+```{r}
+head(which(is.na(trips), arr.ind=TRUE))
+```
+OK. There's something wrong with column 5: "start_station_name".
+Let's take a closer look.
+
+```{r}
+trips %>%
+  filter(is.na(start_station_name)) %>%
+  group_by(start_station_name, start_station_id) %>%
+  tally()
+```
+Now it reveals that "start_station_id" also have NA. Let's delete these rows.
+
+```{r remove rows with NA and re-check}
+trips_c <- trips[complete.cases(trips),]
+trips_c %>%
+  filter(is.na(start_station_name)) %>%
+  group_by(start_station_name, start_station_id) %>%
+  tally()
+```
+Now there's no rows with NA!
+
+#### How can I verify that my data is clean and ready to analyze?
+
+First let's confirm that we have no more NULL or NA.
+
+```{r confirm cleanliness}
+max(is.null(trips_c))
+max(is.na(trips_c))
+```
+Great.
+Next, we should re-arrange the data abit. Let's add ride time and day of week columns. 
+
+First, I'll add a column for time difference in seconds.
+
+```{r add ride time}
+trip_length <- difftime(as.POSIXct(trips_c$ended_at), as.POSIXct(trips_c$started_at), unit='secs')
+trip_c1 <- mutate(trips_c, trip_length)
+```
+
+Next, I'll add a column for day of week.
+
+```{r add day of week 0-6 starting from Sunday}
+day_of_week <- as.POSIXlt(trips_c$started_at)$wday
+trip_c2 <- mutate(trip_c1, day_of_week)
+rm(trip_length, day_of_week, trips_c, trip_c1)
+```
+
+Now, trip_c2 should be good for use in Analyze phase.
+
+#### Have I documented my cleaning process so I can review and share those results?
+
+I'll put every steps in this report, but maybe I'll hide some of them. Nonetheless, I'll describe all the steps I took, even those that I hide.
+
+### Deliverable
+
+ * Documentation of any cleaning or manipulation of data --> done!
+
+## Analyze
+
+This is where all the fun begins!
+Let's check descriptive stats.
+
+```{r some basic stats 1}
+mean(trip_c2$trip_length)
+max(trip_c2$trip_length)
+```
+Certainly someone occupied their bike over 900 hours!
+Let's see how many rows are with over 100 hours and what can I see from it.
+
+```{r data with over 100 hours trip time}
+filter(trip_c2, trip_length > 360000)
+```
+407 rows out of 463k. 
+Let's leave it as it is for now.
+
+Next, let's see day of week modes.
+
+```{r day of week modes}
+trip_c2 %>%
+  group_by(day_of_week) %>%
+  tally()
+```
+Most rides start on Saturday, but overall data is pretty well distributed.
+Now let's go deeper. Firstly, average trip length for each user type.
+```{r average trip length for each user type}
+trip_c2 %>%
+  group_by(member_casual) %>%
+  summarize(mean(trip_length))
+```
+That's surprising. Casual users do spend more time on their rides. Let's dig more onto each day of week.
+```{r average trip length by day of week for casual user 1}
+trip_c2 %>%
+  filter(member_casual == 'casual') %>%
+  group_by(day_of_week) %>%
+  summarize(mean(trip_length),n(),median(trip_length),max(trip_length),min(trip_length))
+```
+Let's look at member users data as well.
+```{r average trip length by day of week for member user 1}
+trip_c2 %>%
+  filter(member_casual == 'member') %>%
+  group_by(day_of_week) %>%
+  summarize(mean(trip_length),n(),median(trip_length),max(trip_length),min(trip_length))
+```
+Strange. Both user types seems to have negative or zero trip length values. Did I miss something in the data?
+```{r negative length?}
+filter(trip_c2, trip_length <= 0)
+```
+Not many. Let's take them out.
+```{r remove rows with negative trip time}
+trip_c3 <- subset(trip_c2,!(trip_length <= 0))
+```
+And run the stats again.
+```{r average trip length by day of week for casual user 2}
+trip_c3 %>%
+  filter(member_casual == 'casual') %>%
+  group_by(day_of_week) %>%
+  summarize(mean(trip_length),n(),median(trip_length),max(trip_length),min(trip_length))
+```
+
+```{r average trip length by day of week for member user 2}
+trip_c3 %>%
+  filter(member_casual == 'member') %>%
+  group_by(day_of_week) %>%
+  summarize(mean(trip_length),n(),median(trip_length),max(trip_length),min(trip_length))
+```
+Doesn't seem that helps with anything. Anyway, we can see more that casual users median and max trip time are higher than member users. So far we spotted 3 differences:
+ * Casual users rode more on weekend - Member users trip count pretty much stayed constant throughout the week
+ * Casual users rode longer than member users
+ * Some casual users occupied their bike for months - not such thing happen with member users
+
+
+#### How should I organize my data to perform analysis on it?
+
+Done in last phase. Sorting this huge data would be meaningless.
+
+#### Has my data been properly formatted?
+
+Yes.
+
+#### What surprises did you discover in the data?
+
+Data on member users didn't really surprise me. Casual data did.
+ * They took bikes for a month to return!?
+ * Seems like many of them use for daily life
+
+#### What trends or relationships did I find in the data?
+
+A few insights I discovered:
+ * Casual users rode more on weekend - Member users trip count pretty much stayed constant throughout the week
+ * Casual users rode longer than member users
+ * Some casual users occupied their bike for months - not such thing happen with member users
+ 
+#### How will these insights help answer my business questions?
+
+With behavioral differences, our marketing team can study more onto how to get casual users to become member users.
+
+### Deliverable
+
+A summary of my analysis
+I found 3 trends/relationships:
+ * Casual users rode more on weekend - Member users trip count pretty much stayed constant throughout the week
+ * Casual users rode longer than member users
+ * Some casual users occupied their bike for months - not such thing happen with member users
+
+## Share
+
+Now I was just reminded that I will be presenting the findings to the executive team.
+Let's make some viz to support my 3 findings. But first, I need to format my day of week correctly!
+
+```{r re-format day of week column}
+trip_c3$day_of_week <- recode(as.character(trip_c3$day_of_week), 
+       "0"="Sunday",
+       "1"="Monday",
+       "2"="Tuesday",
+       "3"="Wednesday",
+       "4"="Thursday",
+       "5"="Friday",
+       "6"="Saturday")
+trip_c3$day_of_week <- ordered(trip_c3$day_of_week, levels = c('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'))
+```
+
+
+```{r plot trips start day of week}
+ggplot(data=trip_c3) + geom_bar(mapping=aes(x=day_of_week)) +
+  facet_wrap('member_casual') + 
+  labs(title = 'trips started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'trips' ) + theme(axis.text.x = element_text(angle = 45))
+```
+
+That's one viz down.
+Next up, the average trip time.
+```{r plot mean for each user type, message=FALSE, warning=FALSE}
+ggplot(data=trip_c3) + stat_summary(aes(x = day_of_week, y = trip_length), fun = "mean", geom = "bar") +
+  facet_wrap('member_casual') + 
+  labs(title = 'average trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'average trip duration' ) + theme(axis.text.x = element_text(angle = 45))
+```
+
+That's another one done! Let's make the viz for the last one.
+
+```{r plot max trip length for each user type}
+ggplot(data=trip_c3) + stat_summary(aes(x = day_of_week, y = trip_length/3600), fun = "max", geom = "bar") +
+  facet_wrap('member_casual') + 
+  labs(title = 'average trip duration started in each day of week', subtitle = 'by casual users VS member users', x = 'day of week', y = 'average trip duration' ) + theme(axis.text.x = element_text(angle = 45))
+```
+
+Now that's all the viz created for all 3 findings. In actual work I'd move over to PowerPoint to make presentation with these visualizations (and some stats descriptions).
+
+## Act
+
+My top three recommendations would be:
+
+* Highlight each users spending and how could they save by subscribing.
+* Create offer to recommend how users can ride a bike to do their daily tasks
+* Follow up with users who took bikes for over a month
