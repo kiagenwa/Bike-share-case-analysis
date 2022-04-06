@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jamrus Ruttanayukol" />
 
-<meta name="date" content="2022-03-28" />
+<meta name="date" content="2022-03-23" />
 
 <title>Case Study: How Does a Bike-Share Navigate Speedy Success?</title>
 
@@ -366,7 +366,7 @@ pre code {
 <h1 class="title toc-ignore">Case Study: How Does a Bike-Share Navigate
 Speedy Success?</h1>
 <h4 class="author">Jamrus Ruttanayukol</h4>
-<h4 class="date">2022-03-28</h4>
+<h4 class="date">2022-03-23</h4>
 
 </div>
 
@@ -382,8 +382,7 @@ I lost interest. Maybe after I learn more I’ll get back to it.</p>
 <p>Anyway, Let’s jump into the project!</p>
 <div id="organization" class="section level4">
 <h4>Organization</h4>
-<p>This report is organized by Data analysis steps as laid out by
-Google:</p>
+<p>This report is organized by Data analysis steps:</p>
 <ul>
 <li>Ask</li>
 <li>Prepare</li>
@@ -403,16 +402,12 @@ annual members and casual riders use our service differently.</p>
 </div>
 <div id="ask" class="section level2">
 <h2>Ask</h2>
-<p>Question: How do annual members and casual riders use Cyclistic bikes
-differently?</p>
-<div id="what-am-i-trying-to-solve" class="section level4">
-<h4>What am I trying to solve?</h4>
+<div id="question-how-do-annual-members-and-casual-riders-use-cyclistic-bikes-differently" class="section level4">
+<h4>Question: How do annual members and casual riders use Cyclistic
+bikes differently?</h4>
 <p>The end goal is getting more memberships. To this end, I need to spot
 behavioral differences that casual riders have from members. Especially
 ones that’d encourage them into subscriptions.</p>
-</div>
-<div id="how-can-my-insights-drive-business-decision" class="section level4">
-<h4>How can my insights drive business decision?</h4>
 <p>Once I spot any difficulties the casual riders face and how annual
 members do their cycling, I can recommend actions to my manager, Moreno.
 The team can also use my insights to improve their other topics of
@@ -435,46 +430,23 @@ Motivate International Inc. available <a href="https://divvy-tripdata.s3.amazon
 before anything, I should note to myself that we must be aware of
 data-privacy issues and, at any circumstances, must not use customer’s
 personally identifiable information (i.e. credit card numbers, home
-address, purchase history, etc.).</p>
-<div id="where-is-my-data-located" class="section level4">
-<h4>Where is my data located?</h4>
-<p>After downloaded the data for past 12 months (March 2021 to February
-2022), I keep the original files in a dedicated folder for this project
-on my PC. During analysis,</p>
+address, purchase history, etc.). For a blessing, the data does not
+contain any personal information unless I actively look for it.</p>
+<p>As this is an internal data, the original files will be kept in a
+local dedicated folder as I work in this project. Then, I’ll upload
+transformed data into team’s drive for other uses.</p>
+<div id="data-credibility" class="section level4">
+<h4>Data Credibility</h4>
+<p>A simple guideline for data credibility: ROCCC - Reliable, Original,
+Comprehensive, Current, and Cite. The data seems OK. Since this data
+only involve company input (and automated data), input errors should be
+small.</p>
 </div>
-<div id="how-is-the-data-organized" class="section level4">
-<h4>How is the data organized?</h4>
-<p>Data is organized by months.</p>
-</div>
-<div id="any-bias-or-credibility-issues-in-this-data" class="section level4">
-<h4>Any bias or credibility issues in this data?</h4>
-<p>Does the data ROCCC - Reliable, Original, Comprehensive, Current, and
-Cite? Yes. The data seems OK. Since this data only involve company input
-(and automated data), input errors should be small.</p>
-</div>
-<div id="how-am-i-going-to-address-licensing-privacy-security-and-accessibility" class="section level4">
-<h4>How am I going to address licensing, privacy, security, and
-accessibility?</h4>
-<p>I will credit the data source in my report, above and at the end. For
-privacy, a quick look at the data seems to contain no personal
-information unless I actively look for it. The data will be kept in my
-PC during work in the project folder. After the project is done, the
-data and the report will be uploaded to team’s shared drive.</p>
-</div>
-<div id="how-did-i-verify-the-datas-integrity" class="section level4">
-<h4>How did I verify the data’s integrity?</h4>
+<div id="data-integrity" class="section level4">
+<h4>Data Integrity</h4>
 <p>I looked at the data and see how it’s formatted. Since this is
 in-house data, integrity should be good. Nonetheless, I’ll confirm
 further as I move to next step.</p>
-</div>
-<div id="how-would-it-help-me-answer-my-question" class="section level4">
-<h4>How would it help me answer my question?</h4>
-<p>The data has a column for member type. I can transform the data and
-look at each type’s pattern.</p>
-</div>
-<div id="any-problems-with-data" class="section level4">
-<h4>Any problems with data?</h4>
-<p>No so far.</p>
 </div>
 <div id="deliverables" class="section level3">
 <h3>Deliverables</h3>
@@ -536,34 +508,31 @@ the answers.</p>
 <div id="process" class="section level2">
 <h2>Process</h2>
 <p>Now, onto the process part.</p>
-<div id="what-tools-am-i-choosing-and-why" class="section level4">
-<h4>What tools am I choosing and why?</h4>
+<div id="chosen-tools" class="section level4">
+<h4>Chosen Tools</h4>
 <p>For this task, I’m planning to use only R. I’ve learned enough of SQL
 from UCDavis SQL basics specialization. I know Python is also useful but
-as of now I only know SQL and R. So, I hope I’ll gain understanding of R
+as of now I prefer to learn R. So, I hope I’ll gain understanding of R
 basics through this course!</p>
 </div>
-<div id="have-i-ensured-my-datas-integrity" class="section level4">
-<h4>Have I ensured my data’s integrity?</h4>
-<p>This is in-house data. Note: data integrity - the accuracy,
-completeness, consistency, and trustworthiness of data throughout its
-life cycle. For this case study purpose, this data has all the
-attributes for its integrity.</p>
+<div id="data-integrity-assurance" class="section level4">
+<h4>Data Integrity Assurance</h4>
+<p>This is in-house data from the system. So, we can trust that the data
+integrity attributes should be good. Nonetheless, we need to check so
+that we can be sure of our analysis results.</p>
+<p>Note: data integrity - the accuracy, completeness, consistency, and
+trustworthiness of data throughout its life cycle.</p>
 <pre class="r"><code>trip_2022 &lt;- rbind(trip_2201, trip_2202)
 trip_2021 &lt;- rbind(trip_2103, trip_2104, trip_2105, trip_2106, trip_2107, trip_2108, trip_2109, trip_2110, trip_2111, trip_2112)
 trips &lt;- rbind(trip_2021, trip_2022)
 rm(trip_2021, trip_2022)
 rm(trip_2103, trip_2104, trip_2105, trip_2106, trip_2107, trip_2108, trip_2109, trip_2110, trip_2111, trip_2112, trip_2201, trip_2202)</code></pre>
-</div>
-<div id="what-steps-have-i-taken-to-ensure-that-my-data-is-clean" class="section level4">
-<h4>What steps have I taken to ensure that my data is clean?</h4>
-<p>Since this is an in-house data, I’ll just do a simple checks for NULL
-and NA.</p>
+<p>First, I’ll do a simple checks for NULL and NA.</p>
 <pre class="r"><code>max(is.null(trips))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>max(is.na(trips))</code></pre>
 <pre><code>## [1] 1</code></pre>
-<p>Oh it seems there’s some NA. Let’s take a closer look.</p>
+<p>Oh it seems there’s some NA. Let’s filter and see.</p>
 <pre class="r"><code>head(which(is.na(trips), arr.ind=TRUE))</code></pre>
 <pre><code>##        row col
 ## [1,] 96597   5
@@ -597,16 +566,12 @@ trips_c %&gt;%
 ## # Groups:   start_station_name [0]
 ## # ... with 3 variables: start_station_name &lt;chr&gt;, start_station_id &lt;chr&gt;,
 ## #   n &lt;int&gt;</code></pre>
-<p>Now there’s no rows with NA!</p>
-</div>
-<div id="how-can-i-verify-that-my-data-is-clean-and-ready-to-analyze" class="section level4">
-<h4>How can I verify that my data is clean and ready to analyze?</h4>
-<p>First let’s confirm that we have no more NULL or NA.</p>
+<p>Next let’s confirm that we have no more NULL or NA.</p>
 <pre class="r"><code>max(is.null(trips_c))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <pre class="r"><code>max(is.na(trips_c))</code></pre>
 <pre><code>## [1] 0</code></pre>
-<p>Great. Next, we should re-arrange the data abit. Let’s add ride time
+<p>Great. Next, we should re-arrange the data a bit. Let’s add ride time
 and day of week columns.</p>
 <p>First, I’ll add a column for time difference in seconds.</p>
 <pre class="r"><code>trip_length &lt;- difftime(as.POSIXct(trips_c$ended_at), as.POSIXct(trips_c$started_at), unit=&#39;secs&#39;)
@@ -616,13 +581,6 @@ trip_c1 &lt;- mutate(trips_c, trip_length)</code></pre>
 trip_c2 &lt;- mutate(trip_c1, day_of_week)
 rm(trip_length, day_of_week, trips_c, trip_c1)</code></pre>
 <p>Now, trip_c2 should be good for use in Analyze phase.</p>
-</div>
-<div id="have-i-documented-my-cleaning-process-so-i-can-review-and-share-those-results" class="section level4">
-<h4>Have I documented my cleaning process so I can review and share
-those results?</h4>
-<p>I’ll put every steps in this report, but maybe I’ll hide some of
-them. Nonetheless, I’ll describe all the steps I took, even those that I
-hide.</p>
 </div>
 <div id="deliverable-1" class="section level3">
 <h3>Deliverable</h3>
@@ -772,46 +730,19 @@ values. Did I miss something in the data?</p>
 ## 7           6 879.7124 secs       356606 648 secs              89738 secs       
 ## # ... with 1 more variable: `min(trip_length)` &lt;drtn&gt;</code></pre>
 <p>Doesn’t seem that helps with anything. Anyway, we can see more that
-casual users median and max trip time are higher than member users. So
-far we spotted 3 differences: * Casual users rode more on weekend -
-Member users trip count pretty much stayed constant throughout the week
-* Casual users rode longer than member users * Some casual users
-occupied their bike for months - not such thing happen with member
-users</p>
-<div id="how-should-i-organize-my-data-to-perform-analysis-on-it" class="section level4">
-<h4>How should I organize my data to perform analysis on it?</h4>
-<p>Done in last phase. Sorting this huge data would be meaningless.</p>
-</div>
-<div id="has-my-data-been-properly-formatted" class="section level4">
-<h4>Has my data been properly formatted?</h4>
-<p>Yes.</p>
-</div>
-<div id="what-surprises-did-you-discover-in-the-data" class="section level4">
-<h4>What surprises did you discover in the data?</h4>
-<p>Data on member users didn’t really surprise me. Casual data did. *
-They took bikes for a month to return!? * Seems like many of them use
-for daily life</p>
-</div>
-<div id="what-trends-or-relationships-did-i-find-in-the-data" class="section level4">
-<h4>What trends or relationships did I find in the data?</h4>
-<p>A few insights I discovered: * Casual users rode more on weekend -
-Member users trip count pretty much stayed constant throughout the week
-* Casual users rode longer than member users * Some casual users
-occupied their bike for months - not such thing happen with member
-users</p>
-</div>
-<div id="how-will-these-insights-help-answer-my-business-questions" class="section level4">
-<h4>How will these insights help answer my business questions?</h4>
-<p>With behavioral differences, our marketing team can study more onto
-how to get casual users to become member users.</p>
-</div>
+casual users median and max trip time are higher than member users.</p>
+<p>Apparently, many casual members ride a bike on a daily basis.
+Marketing team could look further into this to get them subscribed!</p>
 <div id="deliverable-2" class="section level3">
 <h3>Deliverable</h3>
-<p>A summary of my analysis I found 3 trends/relationships: * Casual
-users rode more on weekend - Member users trip count pretty much stayed
-constant throughout the week * Casual users rode longer than member
-users * Some casual users occupied their bike for months - not such
-thing happen with member users</p>
+<p>A summary of my analysis I found 3 trends/relationships:</p>
+<ul>
+<li>Casual users rode more on weekend - Member users trip count pretty
+much stayed constant throughout the week</li>
+<li>Casual users rode longer than member users</li>
+<li>Some casual users occupied their bike for months - not such thing
+happen with member users</li>
+</ul>
 </div>
 </div>
 <div id="share" class="section level2">
